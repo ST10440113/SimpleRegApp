@@ -1,0 +1,67 @@
+﻿@model SimpleRegApp.Models.RegAppViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<form asp-controller="Events" asp-action="Index" method="get">
+<p>
+        <select asp-for="type" asp-items="Model.Types">
+            <option value="">All Types</option>
+            <option value="Concert">Concert</option>
+            <option value="Art Gallery Tour">Art Gallery Tour</option>
+            <option value="Food Festival">Food Festival</option>
+            <option value="Tech Conference">Tech Conference</option>
+            </select>
+
+      
+       <input type="submit" value="Filter" class="btn-dark"/>
+</p>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Events![0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Events![0].Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Events![0].Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Events![0].Type)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Events!) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
