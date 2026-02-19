@@ -1,0 +1,31 @@
+﻿@model SimpleRegApp.Models.Login
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h1><strong>Login Page</strong></h1>
+<div class="card" style="display:flex; justify-content:center">
+<div class="card-header">
+    <h2 style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Login</h2>
+    <div class="card-body" style="background-color:#97108661">
+    <form asp-action="Login" method="post">
+
+        <div class="form-group">
+            <label asp-for="Username"></label>
+            <input asp-for="Username" class="form-control" />
+            <span asp-validation-for="Username" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Password"></label>
+            <input asp-for="Password" class="form-control" type="password" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Login</button>
+
+    </form>
+    </div>
+</div>
+</div>

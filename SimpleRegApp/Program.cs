@@ -32,7 +32,7 @@ namespace SimpleRegApp
             app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}")
+                pattern: "{controller=Events}/{action=Login}/{id?}")
                 .WithStaticAssets();
 
             app.Run();

@@ -12,8 +12,8 @@ using SimpleRegApp.Data;
 namespace SimpleRegApp.Migrations
 {
     [DbContext(typeof(SimpleRegAppContext))]
-    [Migration("20260217121342_secondCreate")]
-    partial class secondCreate
+    [Migration("20260219212727_fifthCreate")]
+    partial class fifthCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,6 +51,20 @@ namespace SimpleRegApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Events");
+                });
+
+            modelBuilder.Entity("SimpleRegApp.Models.Login", b =>
+                {
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Username");
+
+                    b.ToTable("Login");
                 });
 #pragma warning restore 612, 618
         }

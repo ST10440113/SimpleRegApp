@@ -27,7 +27,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Events![0].Name)
+                @Html.DisplayNameFor(model => model.Events![0].EventName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Events![0].Date)
@@ -45,7 +45,7 @@
 @foreach (var item in Model.Events!) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.DisplayFor(modelItem => item.EventName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Date)

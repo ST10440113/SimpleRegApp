@@ -12,8 +12,8 @@ using SimpleRegApp.Data;
 namespace SimpleRegApp.Migrations
 {
     [DbContext(typeof(SimpleRegAppContext))]
-    [Migration("20260217121342_secondCreate")]
-    partial class secondCreate
+    [Migration("20260219210551_ThirdCreate")]
+    partial class ThirdCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -48,6 +48,28 @@ namespace SimpleRegApp.Controllers
             return View(EventsVM);
         }
 
+        [HttpGet]public IActionResult Login()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Login(string? userName, string? password)
+        {
+
+            if (!string.IsNullOrEmpty(userName) && (!string.IsNullOrEmpty(password)))
+            {
+                var user = await _context.Login.FirstOrDefaultAsync(u => u.Username == userName && u.Password == password);
+
+                return RedirectToAction(nameof(Index));
+            }
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                return View();
+
+
+
+            
+        }
+
         // GET: Events/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -77,7 +99,7 @@ namespace SimpleRegApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Date,Description,Type")] Events events)
+        public async Task<IActionResult> Create([Bind("Id,EventName,Date,Description,Type")] Events events)
         {
             if (ModelState.IsValid)
             {
@@ -109,7 +131,7 @@ namespace SimpleRegApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Date,Description,Type")] Events events)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,EventName,Date,Description,Type")] Events events)
         {
             if (id != events.Id)
             {
