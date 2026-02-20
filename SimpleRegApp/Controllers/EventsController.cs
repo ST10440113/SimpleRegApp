@@ -55,20 +55,28 @@ namespace SimpleRegApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string? userName, string? password)
         {
+            var user = await _context.Login.FirstOrDefaultAsync(u => u.Username == userName && u.Password == password);
 
-            if (!string.IsNullOrEmpty(userName) && (!string.IsNullOrEmpty(password)))
+            if (string.IsNullOrEmpty(userName) && (string.IsNullOrEmpty(password)))
             {
-                var user = await _context.Login.FirstOrDefaultAsync(u => u.Username == userName && u.Password == password);
-
-                return RedirectToAction(nameof(Index));
+                TempData["Error"] = "Login details missing";
             }
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                return View();
+
+                if (user == null)
+
+                {
+                    TempData["Error"] = "Invalid Login";
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction(nameof(Index));
+                }
 
 
-
-            
-        }
+            }
+        
+        
 
         // GET: Events/Details/5
         public async Task<IActionResult> Details(int? id)

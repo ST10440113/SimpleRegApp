@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SimpleRegApp.Data;
 
@@ -11,9 +12,11 @@ using SimpleRegApp.Data;
 namespace SimpleRegApp.Migrations
 {
     [DbContext(typeof(SimpleRegAppContext))]
-    partial class SimpleRegAppContextModelSnapshot : ModelSnapshot
+    [Migration("20260220094605_seventhCreate")]
+    partial class seventhCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
