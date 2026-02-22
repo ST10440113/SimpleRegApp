@@ -21,6 +21,8 @@ namespace SimpleRegApp.Models
         [Required,DataType(DataType.Password),Compare("Password")]
         public string ConfirmPassword { get; set; }
 
+        public string Role { get; set; } 
+
 
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using SimpleRegApp.Data;
 using SimpleRegApp.Models;
 
@@ -71,30 +72,39 @@ namespace SimpleRegApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(string?username, string?password)
+        public async Task<IActionResult> Register(string?username, string?password,string? firstName,string? lastName,string? email)
         {
             if(!string.IsNullOrEmpty(username) && (!string.IsNullOrEmpty(password)))
             {
                 TempData["Error"] = "Please complete all fields for registration";
             }
-            var existingUser = _context.Account.FirstOrDefault(up => up.Username == username && up.Password == password);
+            var existingUsername = _context.Account.FirstOrDefault(eu => eu.Username == username );
+            var existingPassword = _context.Account.FirstOrDefault( ee => ee.Password == password);
 
-            if (existingUser != null){
+            if (existingUsername != null){
 
-                TempData["Error"] = "User already exists";
+                TempData["Error"] = "Username already exists";
                 return View();
+            }
+            else if (existingPassword != null)
+            {
+                    TempData["Error"] = "Password already exists";
+                    return View();
             }
             else
             {
                 var newUser = new Account
                 {
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Email = email,
                     Username = username,
-                    Password = password
+                    Password = password,
+                    Role = "User"
                 };
                 _context.Account.Add(newUser);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-
 
             }
         }
