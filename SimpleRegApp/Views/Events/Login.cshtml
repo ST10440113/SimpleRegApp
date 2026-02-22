@@ -26,12 +26,26 @@
                     <input asp-for="Password" class="form-control" type="password" />
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
+                <div>
+                 <label asp-for=Role></label>
+                    <input type="radio" asp-for=Role  value="User" class="form-control" />
+                    <label for="user" class="me-3">User</label>
+                    <input type="radio" asp-for=Role  value="Admin" class="form-control" />
+                    <label for="admin" class="me-3">Admin</label>
+                    <span asp-validation-for="Role" class="text-danger"></span>
+
+                </div>
+               
 
                 <br />
                 <br />
                 <button type="submit" class="btn btn-primary">Login</button>
 
             </form>
+
+            <div>
+                <a asp-action="Register" class="btn btn-link">Don't have an account? Register here.</a>
+            </div>
         </div>
     </div>
 </div>

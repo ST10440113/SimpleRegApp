@@ -38,6 +38,19 @@ namespace SimpleRegApp.Controllers
             return View(await _context.Events.ToListAsync());
         }
 
+        [Authorize]
+        public async Task<IActionResult> UserIndex(string searchString)
+        {
+            var events = from e in _context.Events
+                         select e;
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                events = events.Where(e => e.Type.Contains(searchString));
+                return View(await events.ToListAsync());
+            }
+            return View(await _context.Events.ToListAsync());
+        }
+
         [HttpGet]public IActionResult Login()
         {
             return View();
