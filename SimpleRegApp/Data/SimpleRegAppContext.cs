@@ -15,6 +15,6 @@ namespace SimpleRegApp.Data
         }
 
         public DbSet<SimpleRegApp.Models.Events> Events { get; set; } = default!;
-        public DbSet<SimpleRegApp.Models.Login> Login { get; set; } = default!;
+        public DbSet<SimpleRegApp.Models.Account> Account { get; set; } = default!;
     }
 }

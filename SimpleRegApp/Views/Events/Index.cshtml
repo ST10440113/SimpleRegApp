@@ -1,4 +1,4 @@
-﻿@model SimpleRegApp.Models.RegAppViewModel
+﻿@model IEnumerable<SimpleRegApp.Models.Events>
 
 @{
     ViewData["Title"] = "Index";
@@ -9,59 +9,54 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<form asp-controller="Events" asp-action="Index" method="get">
-<p>
-        <select asp-for="type" asp-items="Model.Types">
-            <option value="">All Types</option>
-            <option value="Concert">Concert</option>
-            <option value="Art Gallery Tour">Art Gallery Tour</option>
-            <option value="Food Festival">Food Festival</option>
-            <option value="Tech Conference">Tech Conference</option>
-            </select>
-
-      
-       <input type="submit" value="Filter" class="btn-dark"/>
-</p>
+<form asp-controller="Events" asp-action="Index" method="get"   >
+    <div  class="form-control" style=" display:flex; justify-content:center; background-color:darkorchid">
+        <input type="text" name="searchString" style="margin-right: 20px; border-radius: 20px; width: 500px" />
+       <button type="submit" class="btn btn-dark ">Search</button>
+   </div>
 </form>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Events![0].EventName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Events![0].Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Events![0].Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Events![0].Type)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Events!) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.EventName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+<br />
+<br />
+<br />
+@foreach (var item in Model)
+            {
+                <div class="row-md-3 mb-4">
+
+                    <div class="card bg-dark text-white shadow border-light" style="height: 350px; overflow: hidden;">
+                        <div class="card-body p-3 d-flex flex-column justify-content-between">
+                            <div>
+                                <h6 class="card-title text-white mb-2">@item.EventName</h6>
+                           @if (!string.IsNullOrEmpty(item.ImageUrl))
+                           {
+                            <img src="@item.ImageUrl"
+                             alt="Product Image" style="height:150px;width:100%;" />
+                              }
+                             else
+                             {
+                        <p class="text-muted small mb-2">No image available</p>
+                             }
+                    <p class="small mb-1">Description: <strong>@item.Description</strong></p>
+                    <p class="small mb-1">Quantity: <strong>@item.Date</strong></p>
+                    <p class="small mb-1">Price: <strong>@item.Type</strong></p>
+
+                    
+                    <form asp-controller="Events" asp-action="Edit" asp-route-id="@item.Id" method="post">
+                     <button type="submit" class="btn-close-white" style="font-size:14px">Edit</button>
+                    </form>
+                    <form asp-controller="Events" asp-action="Details" asp-route-id="@item.Id" method="post">
+                        <button type="submit" class="btn-close-white" style="font-size:14px">Details</button>
+                    </form>
+                    <form asp-controller="Events" asp-action="Delete" asp-route-id="@item.Id" method="post">
+                        <button type="submit" class="btn-close-white" style="font-size:14px">Delete</button>
+                    </form>
+                    
+                </div>
+            </div>
+
+        </div>
+    </div>
 }
-    </tbody>
-</table>
+
+
+
+

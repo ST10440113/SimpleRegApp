@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" enctype="multipart/form-data" class="p-3">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="EventName" class="control-label"></label>
@@ -29,13 +29,18 @@
             </div>
             <div class="form-group">
                 <label asp-for="Type" class="control-label"></label>
-                 <select asp-for="Type">
-                 <option value="Concert">Concert</option>
-                 <option value="Art Gallery Tour">Art Gallery Tour</option>
-                 <option value="Food Festival">Food Festival</option>
-                 <option value="Tech Conference">Tech Conference</option>
-                </select> 
+                <input asp-for="Type" class="form-control" />
                 <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="file" class="control-label">Product Image</label>
+                <input type="file" name="file" accept="image/*" class="form-control" required />
+                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+
+                @if (ViewBag.Url != null)
+                {
+                    <img src="@ViewBag.Url" style="max-width: 300px" />
+                }
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
