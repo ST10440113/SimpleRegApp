@@ -6,49 +6,43 @@
 
 <h1>Events</h1>
 
+
 <p>
-    <a asp-action="Create">Create New</a>
+    
+    <form asp-controller="Events" asp-action="Create">
+        <button type="submit" class="btn btn-outline-info" style="font-size:14px">Create New</button>
+    </form>
 </p>
-<form asp-controller="Events" asp-action="Index" method="get"   >
-    <div class="form-control" style=" display:flex; justify-content:center; background-color:#073931; color:white">
-        <input type="text" name="searchString" style="margin-right: 20px; border-radius: 20px; width: 500px" />
-       <button type="submit" class="btn btn-dark ">Search</button>
-   </div>
-</form>
-<br />
-<br />
-<br />
+
+<div style="display:flex;flex-direction:row; flex-wrap:wrap">
 @foreach (var item in Model)
-            {
-                <div class="row-md-3 mb-4">
+{
+        <div class="card bg-dark text-white shadow border-light" style="height: 300px; width: 280px; overflow: hidden; margin:30px">
+            <div class="card-body p-3 d-flex flex-row justify-content-between">
+                <div>
+                    <h6 class="card-title text-white mb-2">@item.EventName</h6>
 
-                    <div class="card bg-dark text-white shadow border-light" style="height: 350px; overflow: hidden;">
-                        <div class="card-body p-3 d-flex flex-column justify-content-between">
-                            <div>
-                                <h6 class="card-title text-white mb-2">@item.EventName</h6>
-                          
                     <p class="small mb-1">Description: <strong>@item.Description</strong></p>
-                    <p class="small mb-1">Date and Time: <strong>@item.Date</strong></p>
+                    <p class="small mb-1">Date and time: <strong>@item.Date</strong></p>
                     <p class="small mb-1">Event Type: <strong>@item.Type</strong></p>
-
-                    <div style="display:flex; flex-direction:row">
-                    <form asp-controller="Events" asp-action="Edit" asp-route-id="@item.Id" method="post">
-                            <button type="submit" class="btn-outline-info" style="font-size:14px">Edit</button>
-                    </form>
-                    <form asp-controller="Events" asp-action="Details" asp-route-id="@item.Id" method="post">
-                            <button type="submit" class="btn-outline-info" style="font-size:14px">Details</button>
-                    </form>
-                    <form asp-controller="Events" asp-action="Delete" asp-route-id="@item.Id" method="post">
-                        <button type="submit" class="btn-outline-info" style="font-size:14px">Delete</button>
-                    </form>
-                    </div>
                 </div>
+
+
+
+            </div >
+            <div style="display:flex; flex-direction:row; justify-content: space-around; margin:10px;padding-bottom:10px ">
+            <form asp-controller="Events" asp-action="Edit" asp-route-id="@item.Id" method="post">
+                <button type="submit" class="btn btn-outline-info" style="font-size:14px">Edit</button>
+            </form>
+            <form asp-controller="Events" asp-action="Details" asp-route-id="@item.Id" method="post">
+                <button type="submit" class="btn btn-outline-info" style="font-size:14px">Details</button>
+            </form>
+            <form asp-controller="Events" asp-action="Delete" asp-route-id="@item.Id" method="post">
+                <button type="submit" class="btn btn-outline-info" style="font-size:14px">Delete</button>
+            </form>
             </div>
-
         </div>
-    </div>
-}
 
 
-
-
+    }
+</div>

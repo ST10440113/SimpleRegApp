@@ -1,0 +1,67 @@
+﻿@model IEnumerable<SimpleRegApp.Models.Account>
+
+@{
+    ViewData["Title"] = "Search";
+}
+
+<h1>Search</h1>
+
+
+<form asp-controller="Events" asp-action="Search" method="get">
+    <div class="form-control" style=" display:flex; justify-content:center; background-color:#073931; color:white">
+        <input type="text" name="searchString" style="margin-right: 20px; border-radius: 20px; width: 500px" placeholder="Search by first name or last name"/>
+        <button type="submit" class="btn btn-dark ">Search</button>
+    </div>
+</form>
+<table class="table table-bordered border-primary w-100 mt-4 table-dark">
+    <thead  >
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Password)
+            </th>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.Role)
+            </th>
+           
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Username)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Password)
+            </td>
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.Role)
+            </td>
+           
+        </tr>
+}
+    </tbody>
+</table>

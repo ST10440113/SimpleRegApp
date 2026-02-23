@@ -34,24 +34,31 @@ namespace SimpleRegApp.Controllers
                          select e;
             if (!string.IsNullOrEmpty(searchString))
             {
-                events = events.Where(e => e.Type.Contains(searchString));
+                events = events.Where(e => e.Type.Contains(searchString) && e.EventName.Contains(searchString));
                 return View(await events.ToListAsync());
             }
             return View(await _context.Events.ToListAsync());
         }
 
         
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index()
+        {
+           
+            return View(await _context.Events.ToListAsync());
+        }
+
+        public async Task<IActionResult> Search(string searchString)
         {
             var users = from u in _context.Account
-                         select u;
+                        select u;
             if (!string.IsNullOrEmpty(searchString))
             {
                 users = users.Where(u => u.FirstName.Contains(searchString) || u.LastName.Contains(searchString));
                 return View(await users.ToListAsync());
             }
-            return View(await _context.Events.ToListAsync());
+            return View(await _context.Account.ToListAsync());
         }
+
 
         [HttpGet]public IActionResult Login()
         {
