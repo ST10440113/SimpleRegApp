@@ -5,8 +5,12 @@
 }
 @if (TempData["Error"] != null)
 {
-    <div class="alert alert-danger"> @TempData["Error"]</div>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 }
+
 
 <h1 style="font-weight:400; font-family:'Times New Roman', Times, serif ">Login Page</h1>
 <div class="card" style="display:flex; justify-content:center">
@@ -26,15 +30,17 @@
                     <input asp-for="Password" class="form-control" type="password" />
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
-                <div>
-                 <label asp-for=Role></label>
-                    <input type="radio" asp-for=Role  value="User" class="form-control" />
-                    <label for="user" class="me-3">User</label>
-                    <input type="radio" asp-for=Role  value="Admin" class="form-control" />
+                <div class="mb-3">
+                    <label class="form-label">Login As</label><br />
+                    <input type="radio" asp-for="Role" value="Admin" />
                     <label for="admin" class="me-3">Admin</label>
-                    <span asp-validation-for="Role" class="text-danger"></span>
 
+                    <input type="radio" asp-for="Role" value="User" />
+                    <label for="user">User</label>
+
+                    <span asp-validation-for="Role" class="text-danger"></span>
                 </div>
+
                
 
                 <br />

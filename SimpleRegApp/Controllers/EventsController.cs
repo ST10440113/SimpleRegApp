@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -10,6 +8,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using SimpleRegApp.Data;
 using SimpleRegApp.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 
 namespace SimpleRegApp.Controllers
@@ -26,7 +28,7 @@ namespace SimpleRegApp.Controllers
         // GET: Events
 
        
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> UserIndex(string searchString)
         {
             var events = from e in _context.Events
                          select e;
@@ -39,7 +41,7 @@ namespace SimpleRegApp.Controllers
         }
 
         
-        public async Task<IActionResult> UserIndex(string searchString)
+        public async Task<IActionResult> Index(string searchString)
         {
             var users = from u in _context.Account
                          select u;
@@ -57,28 +59,51 @@ namespace SimpleRegApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(string? userName, string? password)
+        public async Task<IActionResult> Login(string? userName, string? password, string? role)
         {
-            var user = await _context.Account.FirstOrDefaultAsync(u => u.Username == userName && u.Password == password);
+            var user = await _context.Account.FirstOrDefaultAsync(u => u.Username == userName && u.Password == password && u.Role == role);
 
-            if (string.IsNullOrEmpty(userName) && (string.IsNullOrEmpty(password)))
+            if (string.IsNullOrEmpty(userName) && (string.IsNullOrEmpty(password)) && (string.IsNullOrEmpty(role)))
             {
                 TempData["Error"] = "Login details missing";
             }
+            if (user == null)
 
-                if (user == null)
-
-                {
-                    TempData["Error"] = "Invalid Login";
-                    return View();
-                }
-                else 
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-
+            {
+                TempData["Error"] = "Account does not exist";
+                return View();
+            }
+            else
+            {
+                HttpContext.Session.SetString("FirstName", user.FirstName);
+                HttpContext.Session.SetString("Username", user.Username);
+                HttpContext.Session.SetString("Role", user.Role);
 
             }
+            if (user.Role == "Admin")
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            else if (user.Role == "User")
+            {
+                return RedirectToAction(nameof(UserIndex));
+            }
+            return View();
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            TempData["Success"] = "Successfully logged out!";
+            return RedirectToAction(nameof(UserIndex));
+        }
+
+
+
+
         [HttpGet]public IActionResult Register()
         {
             return View();
@@ -117,7 +142,9 @@ namespace SimpleRegApp.Controllers
                 };
                 _context.Account.Add(newUser);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                TempData["Success"] = "Registration successful";
+                return RedirectToAction(nameof(UserIndex));
+                
 
             }
         }

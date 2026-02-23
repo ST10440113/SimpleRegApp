@@ -18,8 +18,8 @@ namespace SimpleRegApp.Models
         public string Password { get; set; }
 
         
-        [Required,DataType(DataType.Password),Compare("Password")]
-        public string ConfirmPassword { get; set; }
+        [DataType(DataType.Password),Compare("Password")]
+        public string? ConfirmPassword { get; set; }
 
         public string Role { get; set; } 
 
