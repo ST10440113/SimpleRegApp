@@ -25,7 +25,7 @@ namespace SimpleRegApp.Controllers
 
         // GET: Events
 
-        [Authorize]
+       
         public async Task<IActionResult> Index(string searchString)
         {
             var events = from e in _context.Events
@@ -38,7 +38,7 @@ namespace SimpleRegApp.Controllers
             return View(await _context.Events.ToListAsync());
         }
 
-        [Authorize]
+        
         public async Task<IActionResult> UserIndex(string searchString)
         {
             var events = from e in _context.Events
@@ -125,7 +125,7 @@ namespace SimpleRegApp.Controllers
 
 
         // GET: Events/Details/5
-        [Authorize]
+      
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -142,7 +142,7 @@ namespace SimpleRegApp.Controllers
 
             return View(events);
         }
-        [Authorize]
+        
         // GET: Events/Create
         public IActionResult Create()
         {
