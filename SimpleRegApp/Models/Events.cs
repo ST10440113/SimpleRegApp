@@ -10,10 +10,7 @@ namespace SimpleRegApp.Models
         public string Description { get; set; }
         public string Type { get; set; }
          
-        public string ImageUrl { get; set; }
-        public Events()
-        {
-
-        }
+        public IFormFile Image { get; set; }
+        
     }
 }

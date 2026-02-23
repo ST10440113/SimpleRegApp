@@ -41,12 +41,12 @@ namespace SimpleRegApp.Controllers
         
         public async Task<IActionResult> UserIndex(string searchString)
         {
-            var events = from e in _context.Events
-                         select e;
+            var users = from u in _context.Account
+                         select u;
             if (!string.IsNullOrEmpty(searchString))
             {
-                events = events.Where(e => e.Type.Contains(searchString));
-                return View(await events.ToListAsync());
+                users = users.Where(u => u.FirstName.Contains(searchString) || u.LastName.Contains(searchString));
+                return View(await users.ToListAsync());
             }
             return View(await _context.Events.ToListAsync());
         }
@@ -163,7 +163,7 @@ namespace SimpleRegApp.Controllers
                 {
                     await file.CopyToAsync(stream);
                 }
-                events.ImageUrl = "/images/" + file.FileName;
+               
             }
 
             if (ModelState.IsValid)

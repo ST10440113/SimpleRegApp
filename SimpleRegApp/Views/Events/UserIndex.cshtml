@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<SimpleRegApp.Models.Events>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "UserIndex";
 }
 
 <h1>Events</h1>
@@ -25,15 +25,7 @@
                         <div class="card-body p-3 d-flex flex-row justify-content-between">
                             <div>
                                 <h6 class="card-title text-white mb-2">@item.EventName</h6>
-                           @if (!string.IsNullOrEmpty(item.ImageUrl))
-                           {
-                            <img src="@item.ImageUrl"
-                             alt="Product Image" style="height:150px;width:100%;" />
-                              }
-                             else
-                             {
-                        <p class="text-muted small mb-2">No image available</p>
-                             }
+                           
                     <p class="small mb-1">Description: <strong>@item.Description</strong></p>
                     <p class="small mb-1">Quantity: <strong>@item.Date</strong></p>
                     <p class="small mb-1">Price: <strong>@item.Type</strong></p>
