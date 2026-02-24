@@ -185,7 +185,6 @@ namespace SimpleRegApp.Controllers
         public async Task<IActionResult> Create([Bind("Id,EventName,Date,Description,Type")] Events events)
         {
 
-
             if (ModelState.IsValid)
             {
                 _context.Add(events);
@@ -196,7 +195,7 @@ namespace SimpleRegApp.Controllers
         }
 
         // GET: Events/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        [HttpGet]public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -217,7 +216,7 @@ namespace SimpleRegApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,EventName,Date,Description,Type")] Events events)
+        public async Task<IActionResult> Edit(int id, [Bind("EventId,EventName,Date,Description,Type")] Events events)
         {
             if (id != events.EventId)
             {

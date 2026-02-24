@@ -31,7 +31,7 @@
 
             </div >
             <div style="display:flex; flex-direction:row; justify-content: space-around; margin:10px;padding-bottom:10px ">
-            <form asp-controller="Events" asp-action="Edit" asp-route-id="@item.EventId" method="post">
+            <form asp-controller="Events" asp-action="Edit" asp-route-id="@item.EventId" method="get">
                 <button type="submit" class="btn btn-outline-info" style="font-size:14px">Edit</button>
             </form>
             <form asp-controller="Events" asp-action="Details" asp-route-id="@item.EventId" method="post">
