@@ -24,17 +24,10 @@ namespace SimpleRegApp.Controllers
                          select e;
             if (!string.IsNullOrEmpty(searchString))
             {
-                events = events.Where(e => e.Type.Contains(searchString) || e.EventName.Contains(searchString));
-               
+                events = events.Where(e => e.Type.Contains(searchString) && e.EventName.Contains(searchString));
+                return View(await events.ToListAsync());
             }
-            var eventList = await events.ToListAsync();
-
-            if (!eventList.Any())
-            {
-                TempData["Error"] = "Sorry, no events match your search";
-            }
-             
-                return View(eventList);
+            return View(await _context.Events.ToListAsync());
         }
 
 
