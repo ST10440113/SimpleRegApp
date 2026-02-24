@@ -248,6 +248,7 @@ namespace SimpleRegApp.Controllers
         }
         public async Task<IActionResult> RegisterDetails(int? id)
         {
+           
             if (id == null)
             {
                 return NotFound();
@@ -295,7 +296,7 @@ namespace SimpleRegApp.Controllers
                 Console.WriteLine($"re.Id = {re.Id}, re.EventId = {re.EventId}");
                 _context.Add(re);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(RegisterDetails));
+                return RedirectToAction(nameof(RegisterDetails), new { id = re.Id });
             }
 
             return View(eventToRegister);
