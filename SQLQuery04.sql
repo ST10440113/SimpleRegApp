@@ -1,0 +1,4 @@
+﻿DROP TABLE IF EXISTS [RegisteredEvents];
+DROP TABLE IF EXISTS [Events];
+DROP TABLE IF EXISTS [Account];
+DROP TABLE IF EXISTS [__EFMigrationsHistory];
