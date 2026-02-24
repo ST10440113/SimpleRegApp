@@ -1,0 +1,4 @@
+﻿SET IDENTITY_INSERT RegisteredEvents ON;
+
+SET IDENTITY_INSERT RegisteredEvents OFF;
+

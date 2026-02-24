@@ -1,0 +1,24 @@
+﻿@model SimpleRegApp.Models.RegisteredEvents
+
+@{
+    ViewData["Title"] = "Registration Confirmed";
+}
+
+<h1>You're registered!</h1>
+
+<div class="card bg-dark text-white shadow border-light" style="width: 600px; margin: 30px;">
+    <div class="card-body p-3">
+        <h5 class="card-title">You have registered for <strong>@Model.Event.EventName</strong></h5>
+        <hr />
+        <p>First Name: <strong>@Model.FName</strong></p>
+        <p>Last Name: <strong>@Model.LName</strong></p>
+        <p>Email: <strong>@Model.EmailAddress</strong></p>
+        <p>Phone Number: <strong>@Model.PhoneNumber</strong></p>
+        <hr />
+        <p>Event Date: <strong>@Model.Event.Date</strong></p>
+        <p>Event Type: <strong>@Model.Event.Type</strong></p>
+        <p>Description: <strong>@Model.Event.Description</strong></p>
+    </div>
+</div>
+
+<a asp-action="UserIndex" class="btn btn-outline-light mt-3">Back to Events</a>

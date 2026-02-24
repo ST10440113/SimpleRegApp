@@ -1,0 +1,37 @@
+﻿@model SimpleRegApp.Models.Events
+
+@{
+    ViewData["Title"] = "Register for Event";
+}
+
+<h1>Register for @Model.EventName</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EventRegistration" asp-route-id="@Model.EventId" method="post" class="p-3">
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                <label>First Name</label>
+                <input name="FName" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <label>Last Name</label>
+                <input name="LName" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input name="EmailAddress" type="email" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input name="PhoneNumber" class="form-control" />
+            </div>
+            
+            <div class="form-group mt-3">
+                <button type="submit" class="btn btn-outline-info">Register</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<a asp-action="UserIndex">Back to Events</a>

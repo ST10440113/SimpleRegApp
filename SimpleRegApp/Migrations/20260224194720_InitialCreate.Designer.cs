@@ -12,8 +12,8 @@ using SimpleRegApp.Data;
 namespace SimpleRegApp.Migrations
 {
     [DbContext(typeof(SimpleRegAppContext))]
-    [Migration("20260222192217_ninthCreate")]
-    partial class ninthCreate
+    [Migration("20260224194720_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,7 +34,6 @@ namespace SimpleRegApp.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ConfirmPassword")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -53,6 +52,10 @@ namespace SimpleRegApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -64,11 +67,11 @@ namespace SimpleRegApp.Migrations
 
             modelBuilder.Entity("SimpleRegApp.Models.Events", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("EventId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EventId"));
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -81,17 +84,58 @@ namespace SimpleRegApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImageUrl")
+                    b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Type")
+                    b.HasKey("EventId");
+
+                    b.ToTable("Events");
+                });
+
+            modelBuilder.Entity("SimpleRegApp.Models.RegisteredEvents", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("EmailAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Events");
+                    b.HasIndex("EventId");
+
+                    b.ToTable("RegisteredEvents");
+                });
+
+            modelBuilder.Entity("SimpleRegApp.Models.RegisteredEvents", b =>
+                {
+                    b.HasOne("SimpleRegApp.Models.Events", "Event")
+                        .WithMany()
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Event");
                 });
 #pragma warning restore 612, 618
         }

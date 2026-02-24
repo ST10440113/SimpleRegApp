@@ -1,17 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using SimpleRegApp.Data;
 using SimpleRegApp.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 
 namespace SimpleRegApp.Controllers
@@ -27,7 +17,7 @@ namespace SimpleRegApp.Controllers
 
         // GET: Events
 
-       
+
         public async Task<IActionResult> UserIndex(string searchString)
         {
             var events = from e in _context.Events
@@ -40,10 +30,10 @@ namespace SimpleRegApp.Controllers
             return View(await _context.Events.ToListAsync());
         }
 
-        
+
         public async Task<IActionResult> Index()
         {
-           
+
             return View(await _context.Events.ToListAsync());
         }
 
@@ -60,7 +50,8 @@ namespace SimpleRegApp.Controllers
         }
 
 
-        [HttpGet]public IActionResult Login()
+        [HttpGet]
+        public IActionResult Login()
         {
             return View();
         }
@@ -111,30 +102,33 @@ namespace SimpleRegApp.Controllers
 
 
 
-        [HttpGet]public IActionResult Register()
+
+        [HttpGet]
+        public IActionResult Register()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(string?username, string?password,string? firstName,string? lastName,string? email)
+        public async Task<IActionResult> Register(string? username, string? password, string? firstName, string? lastName, string? email)
         {
-            if(!string.IsNullOrEmpty(username) && (!string.IsNullOrEmpty(password)))
+            if (!string.IsNullOrEmpty(username) && (!string.IsNullOrEmpty(password)))
             {
                 TempData["Error"] = "Please complete all fields for registration";
             }
-            var existingUsername = _context.Account.FirstOrDefault(eu => eu.Username == username );
-            var existingPassword = _context.Account.FirstOrDefault( ee => ee.Password == password);
+            var existingUsername = _context.Account.FirstOrDefault(eu => eu.Username == username);
+            var existingPassword = _context.Account.FirstOrDefault(ee => ee.Password == password);
 
-            if (existingUsername != null){
+            if (existingUsername != null)
+            {
 
                 TempData["Error"] = "Username already exists";
                 return View();
             }
             else if (existingPassword != null)
             {
-                    TempData["Error"] = "Password already exists";
-                    return View();
+                TempData["Error"] = "Password already exists";
+                return View();
             }
             else
             {
@@ -151,7 +145,7 @@ namespace SimpleRegApp.Controllers
                 await _context.SaveChangesAsync();
                 TempData["Success"] = "Registration successful";
                 return RedirectToAction(nameof(UserIndex));
-                
+
 
             }
         }
@@ -159,7 +153,7 @@ namespace SimpleRegApp.Controllers
 
 
         // GET: Events/Details/5
-      
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -168,7 +162,7 @@ namespace SimpleRegApp.Controllers
             }
 
             var events = await _context.Events
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.EventId == id);
             if (events == null)
             {
                 return NotFound();
@@ -176,7 +170,7 @@ namespace SimpleRegApp.Controllers
 
             return View(events);
         }
-        
+
         // GET: Events/Create
         public IActionResult Create()
         {
@@ -188,17 +182,9 @@ namespace SimpleRegApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,EventName,Date,Description,Type")] Events events, IFormFile file)
+        public async Task<IActionResult> Create([Bind("Id,EventName,Date,Description,Type")] Events events)
         {
-            if (file != null && file.Length > 0)
-            {
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), file.FileName);
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await file.CopyToAsync(stream);
-                }
-               
-            }
+
 
             if (ModelState.IsValid)
             {
@@ -225,6 +211,7 @@ namespace SimpleRegApp.Controllers
             return View(events);
         }
 
+
         // POST: Events/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -232,7 +219,7 @@ namespace SimpleRegApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,EventName,Date,Description,Type")] Events events)
         {
-            if (id != events.Id)
+            if (id != events.EventId)
             {
                 return NotFound();
             }
@@ -246,7 +233,7 @@ namespace SimpleRegApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EventsExists(events.Id))
+                    if (!EventsExists(events.EventId))
                     {
                         return NotFound();
                     }
@@ -259,6 +246,61 @@ namespace SimpleRegApp.Controllers
             }
             return View(events);
         }
+        public async Task<IActionResult> RegisterDetails(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var registration = await _context.RegisteredEvents
+                .Include(r => r.Event)
+                .FirstOrDefaultAsync(r => r.Id == id);
+
+            if (registration == null)
+            {
+                return NotFound();
+            }
+            return View(registration);
+        }
+
+        public async Task<IActionResult> EventRegistration(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var events = await _context.Events.FindAsync(id);
+            if (events == null)
+            {
+                return NotFound();
+            }
+            return View(events);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EventRegistration(int id,[Bind("FName,LName,EmailAddress,PhoneNumber")] RegisteredEvents re)
+        {
+            var eventToRegister = await _context.Events.FindAsync(id);
+            if (eventToRegister == null)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                re.EventId = id;
+                Console.WriteLine($"re.Id = {re.Id}, re.EventId = {re.EventId}");
+                _context.Add(re);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(RegisterDetails));
+            }
+
+            return View(eventToRegister);
+        }
+
 
         // GET: Events/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -269,7 +311,7 @@ namespace SimpleRegApp.Controllers
             }
 
             var events = await _context.Events
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.EventId == id);
             if (events == null)
             {
                 return NotFound();
@@ -295,7 +337,7 @@ namespace SimpleRegApp.Controllers
 
         private bool EventsExists(int id)
         {
-            return _context.Events.Any(e => e.Id == id);
+            return _context.Events.Any(e => e.EventId == id);
         }
     }
 }
