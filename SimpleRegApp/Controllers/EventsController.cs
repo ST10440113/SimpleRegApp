@@ -16,8 +16,6 @@ namespace SimpleRegApp.Controllers
         }
 
         // GET: Events
-
-
         public async Task<IActionResult> UserIndex(string searchString)
         {
             var events = from e in _context.Events
@@ -182,9 +180,7 @@ namespace SimpleRegApp.Controllers
             return View();
         }
 
-        // POST: Events/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Events/Create       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,EventName,Date,Description,Type")] Events events)
@@ -192,7 +188,14 @@ namespace SimpleRegApp.Controllers
 
             if (ModelState.IsValid)
             {
-                _context.Add(events);
+                var registration = new EventsBuilder()
+                    .SetEventName(events.EventName)
+                    .SetEventDate(events.Date)
+                    .SetEventDescription(events.Description)
+                    .SetEventType(events.Type)
+                    .SetEventFee(events.EventFee)
+                    .Build();
+                _context.Add(registration);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -232,7 +235,15 @@ namespace SimpleRegApp.Controllers
             {
                 try
                 {
-                    _context.Update(events);
+                    var updatedRegistration = new EventsBuilder()
+                    .SetEventName(events.EventName)
+                    .SetEventDate(events.Date)
+                    .SetEventDescription(events.Description)
+                    .SetEventType(events.Type)
+                    .SetEventFee(events.EventFee)
+                    .Build();
+                    updatedRegistration.EventId = events.EventId; 
+                    _context.Update(updatedRegistration);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -296,8 +307,7 @@ namespace SimpleRegApp.Controllers
 
             if (ModelState.IsValid)
             {
-                re.EventId = id;
-                Console.WriteLine($"re.Id = {re.Id}, re.EventId = {re.EventId}");
+                re.EventId = id;               
                 _context.Add(re);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(RegisterDetails), new { id = re.Id });
